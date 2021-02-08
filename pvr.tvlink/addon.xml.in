@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="pvr.tvlink"
+  version="2.0.3"
+  name="PVR TVLINK Client"
+  provider-name="Alex@ELEC">
+  <requires>@ADDON_DEPENDS@
+    <import addon="inputstream.ffmpegdirect" minversion="1.19.0" version="1.19.0"/>
+  </requires>
+  <extension
+    point="kodi.pvrclient"
+    library_@PLATFORM@="@LIBRARY_FILENAME@"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">PVR addon for TVLINK server.</summary>
+    <summary lang="ru_RU">PVR аддон для TVLINK сервера.  https://alexelec.tv/nastrojka-tvlink/</summary>
+    <description lang="en_GB">TVLINK PVR Client support streaming of Live TV, Timeshift, TV programs archives and EPG.</description>
+    <description lang="ru_RU">Интерфейс для TVLINK сервера. Поддерживает просмотр потокового ТВ, архивов передач, Timeshift и работу с электронным телегидом.</description>
+    <disclaimer lang="en_GB">The authors are in no way responsible for failed playings, incorrect EPG times, wasted hours, or any other undesirable effects.</disclaimer>
+    <disclaimer lang="ru_RU">Это нестабильная программа! Авторы не несут ответственности за неудачные воспроизведение, неверные время EPG, потраченное время и прочие нежелательные эффекты.</disclaimer>
+    <platform>@PLATFORM@</platform>
+    <license>GPL-2.0-or-later</license>
+    <forum>https://forum.alexelec.tv/index.php?board=10.0</forum>
+    <assets>
+      <icon>icon.png</icon>
+    </assets>
+    <news>
+v2.0.3
+- Fixed: Reset count when the stream is closed
+- Fixed: Add missing initialisation of display name with underscores after fixing slow epg
+v2.0.2
+- Added: restart stream if max count stalled
+- Added: send a request to restart the stream
+- Added: reload settings before reloading playlist and EPG data
+v2.0.1
+- Fixed: An xmltv channel cannot have an empty id field
+- Fixed: Fix slow epg load due to display name checks when finding a channel
+- Fixed: Only force load EPG data on startup if catchup is enabled
+v2.0.0
+- Init: first version for Matrix
+    </news>
+  </extension>
+</addon>

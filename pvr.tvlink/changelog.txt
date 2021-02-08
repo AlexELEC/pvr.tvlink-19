@@ -1,0 +1,16 @@
+v2.0.3
+- Fixed: Reset count when the stream is closed
+- Fixed: Add missing initialisation of display name with underscores after fixing slow epg
+
+v2.0.2
+- Added: restart stream if max count stalled
+- Added: send a request to restart the stream
+- Added: reload settings before reloading playlist and EPG data
+
+v2.0.1
+- Fixed: An xmltv channel cannot have an empty id field
+- Fixed: Fix slow epg load due to display name checks when finding a channel
+- Fixed: Only force load EPG data on startup if catchup is enabled
+
+v2.0.0
+- Init: first version for Matrix
