@@ -51,6 +51,11 @@ msgctxt "#30012"
 msgid "TVLINK port"
 msgstr ""
 
+#. label: General - tvlinkUser
+msgctxt "#30709"
+msgid "TVLINK profile"
+msgstr ""
+
 #. label: General - startNum
 msgctxt "#30013"
 msgid "Start channel number"
@@ -424,6 +429,11 @@ msgctxt "#30602"
 msgid "This setting must contain a valid [B]TVLINK port[/B] for the addon to function."
 msgstr ""
 
+#. help: General - tvlinkUser
+msgctxt "#30710"
+msgid "This setting must contain a valid [B]TVLINK user profile name[/B] for the addon to function."
+msgstr ""
+
 #. help: General - m3uCache
 msgctxt "#30604"
 msgid "Select whether or not the the channel list should be cached locally."
@@ -634,7 +644,7 @@ msgctxt "#30708"
 msgid "When selected from the EPG the current live programme cannot be watched as catchup until finished."
 msgstr ""
 
-#empty strings from id 30709 to 307199
+#empty strings from id 30711 to 307199
 
 #. help info - Timeshift
 

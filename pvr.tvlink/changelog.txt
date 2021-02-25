@@ -1,3 +1,6 @@
+v2.0.4
+- Added: user profile settings
+
 v2.0.3
 - Fixed: Reset count when the stream is closed
 - Fixed: Add missing initialisation of display name with underscores after fixing slow epg

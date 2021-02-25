@@ -21,6 +21,14 @@
           </constraints>
           <control type="edit" format="string" />
         </setting>
+        <setting id="tvlinkUser" type="string" label="30709" help="30710">
+          <level>0</level>
+          <default></default>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <control type="edit" format="string" />
+        </setting>
         <setting id="m3uCache" type="boolean" label="30025" help="30604">
           <level>0</level>
           <default>false</default>

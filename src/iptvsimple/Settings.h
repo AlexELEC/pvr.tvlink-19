@@ -199,6 +199,7 @@ namespace iptvsimple
     // TVLINK Server
     std::string m_tvlinkIP;
     std::string m_tvlinkPort;
+    std::string m_tvlinkUser;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;

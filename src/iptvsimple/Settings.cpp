@@ -24,9 +24,13 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
   // TVLINK Server
   m_tvlinkIP = kodi::GetSettingString("tvlinkIP", "127.0.0.1");
   m_tvlinkPort = kodi::GetSettingString("tvlinkPort", "2020");
+  m_tvlinkUser = kodi::GetSettingString("tvlinkUser");
 
   // M3U
-  m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist";
+  if (!m_tvlinkUser.empty())
+    m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist/" + m_tvlinkUser;
+  else
+    m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist";
   m_cacheM3U = kodi::GetSettingBoolean("m3uCache", false);
   m_startChannelNumber = kodi::GetSettingInt("startNum", 1);
   m_numberChannelsByM3uOrderOnly = kodi::GetSettingBoolean("numberByOrder", false);
@@ -63,6 +67,8 @@ ADDON_STATUS Settings::SetValue(const std::string& settingName, const kodi::CSet
     return SetStringSetting<ADDON_STATUS>(settingName, settingValue, m_tvlinkIP, ADDON_STATUS_OK, ADDON_STATUS_OK);
   else if (settingName == "tvlinkPort")
     return SetStringSetting<ADDON_STATUS>(settingName, settingValue, m_tvlinkPort, ADDON_STATUS_OK, ADDON_STATUS_OK);
+  else if (settingName == "tvlinkUser")
+    return SetStringSetting<ADDON_STATUS>(settingName, settingValue, m_tvlinkUser, ADDON_STATUS_OK, ADDON_STATUS_OK);
   else if (settingName == "m3uCache")
     return SetSetting<bool, ADDON_STATUS>(settingName, settingValue, m_cacheM3U, ADDON_STATUS_OK, ADDON_STATUS_OK);
   else if (settingName == "startNum")

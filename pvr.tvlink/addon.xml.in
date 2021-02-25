@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.0.3"
+  version="2.0.4"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.0.4
+- Added: user profile settings
 v2.0.3
 - Fixed: Reset count when the stream is closed
 - Fixed: Add missing initialisation of display name with underscores after fixing slow epg
