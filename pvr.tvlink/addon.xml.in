@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.0.4"
+  version="2.0.5"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
-    <import addon="inputstream.ffmpegdirect" minversion="1.19.0" version="1.19.0"/>
+    <import addon="inputstream.ffmpegdirect" minversion="1.19.0"/>
   </requires>
   <extension
     point="kodi.pvrclient"
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.0.5
+- Fixed: Add support for format specifiers use for detecting terminating catchup and granularity
 v2.0.4
 - Added: user profile settings
 v2.0.3

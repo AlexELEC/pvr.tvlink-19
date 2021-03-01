@@ -1,3 +1,6 @@
+v2.0.5
+- Fixed: Add support for format specifiers use for detecting terminating catchup and granularity
+
 v2.0.4
 - Added: user profile settings
 

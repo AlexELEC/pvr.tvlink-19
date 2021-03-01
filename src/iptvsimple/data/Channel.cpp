@@ -251,9 +251,13 @@ bool IsTerminatingCatchupSource(const std::string& formatString)
   if (formatString.find("{duration}") != std::string::npos ||
       formatString.find("{duration:") != std::string::npos ||
       formatString.find("{lutc}") != std::string::npos ||
+      formatString.find("{lutc:") != std::string::npos ||
       formatString.find("${timestamp}") != std::string::npos ||
+      formatString.find("${timestamp:") != std::string::npos ||
       formatString.find("{utcend}") != std::string::npos ||
-      formatString.find("${end}") != std::string::npos)
+      formatString.find("{utcend:") != std::string::npos ||
+      formatString.find("${end}") != std::string::npos ||
+      formatString.find("${end:") != std::string::npos)
     return true;
 
   return false;
@@ -263,7 +267,9 @@ int FindCatchupSourceGranularitySeconds(const std::string& formatString)
 {
   // A catchup stream has one second granularity if it supports these specifiers
   if (formatString.find("{utc}") != std::string::npos ||
+      formatString.find("{utc:") != std::string::npos ||
       formatString.find("${start}") != std::string::npos ||
+      formatString.find("${start:") != std::string::npos ||
       formatString.find("{S}") != std::string::npos ||
       formatString.find("{offset:1}") != std::string::npos)
     return 1;
