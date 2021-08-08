@@ -372,19 +372,14 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
       iRestart_cnt = 1;
     }
 
+    // MAX_COUNT_RESTART = 5
     if (iRestart_cnt > MAX_COUNT_RESTART || bytesRead < 1 )
     {
       Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] stream stalled count: %d", __FUNCTION__, name.c_str(), iRestart_cnt);
-      iRestart_cnt = 0;
-
-      // send restart stream
-      kodi::vfs::CFile restartHandle;
-      std::string restart_url = url + "?restart=kodi";
-      restartHandle.CURLCreate(restart_url.c_str());
-      restartHandle.CURLOpen(ADDON_READ_NO_CACHE);
 
       // restart stream
       CloseLiveStream();
+      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] restart channel [%s]", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
       m_streamHandle.CURLCreate(url.c_str());
       m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", "10");
       // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
@@ -393,10 +388,12 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
         Logger::Log(LogLevel::LEVEL_INFO, "%s - Could not open streaming for channel [%s]", __FUNCTION__, name.c_str());
         return -1;
       }
-
-      Logger::Log(LogLevel::LEVEL_INFO, "%s - restart channel [%s] [%s]", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
       bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
     }
+  }
+  else
+  {
+    iRestart_cnt = 0;
   }
   return bytesRead;
 }

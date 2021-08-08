@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.0.5"
+  version="2.0.6"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.0.6
+- Fixed: reopen current channel on failure
 v2.0.5
 - Fixed: Add support for format specifiers use for detecting terminating catchup and granularity
 v2.0.4
