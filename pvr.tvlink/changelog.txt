@@ -1,3 +1,7 @@
+v2.0.7
+- Fixed: Fix episode number when there is no season
+- Fixed: Return server error if channels or groups could not be loaded due to missing file so they are not cleared in Kodi
+
 v2.0.6
 - Fixed: reopen current channel on failure
 
