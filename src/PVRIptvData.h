@@ -86,6 +86,7 @@ private:
   static const int PROCESS_LOOP_WAIT_SECS = 2;
   static const int MAX_COUNT_RESTART = 4;
   unsigned int iRestart_cnt = 0;
+  int iCurl_timeout;
   std::string strLastURL;
 
   iptvsimple::data::Channel m_currentChannel;

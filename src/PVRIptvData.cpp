@@ -78,6 +78,7 @@ ADDON_STATUS PVRIptvData::Create()
 
   m_running = true;
   m_thread = std::thread([&] { Process(); });
+  iCurl_timeout = Settings::GetInstance().GetTvlinkTimeout(); // CURL connection timeout
 
   return ADDON_STATUS_OK;
 }
@@ -333,13 +334,14 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
     std::string name = m_currentChannel.GetChannelName();
 
     m_streamHandle.CURLCreate(url.c_str());
-    m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", "10");
+    m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout));
     // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
     if (m_streamHandle.CURLOpen(ADDON_READ_NO_CACHE))
-    {
       Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Live URL: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
-      return m_streamHandle.IsOpen();
-    }
+    else
+      Logger::Log(LogLevel::LEVEL_ERROR, "%s - timeout %d sec [%s] Live URL: %s", __FUNCTION__, iCurl_timeout, name.c_str(), WebUtils::RedactUrl(url).c_str());
+
+    return m_streamHandle.IsOpen();
   }
   return false;
 }
@@ -386,11 +388,11 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
       CloseLiveStream();
       Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] restart channel [%s]", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
       m_streamHandle.CURLCreate(url.c_str());
-      m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", "10");
+      m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout));
       // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
       if (!m_streamHandle.CURLOpen(ADDON_READ_NO_CACHE))
       {
-        Logger::Log(LogLevel::LEVEL_INFO, "%s - Could not open streaming for channel [%s]", __FUNCTION__, name.c_str());
+        Logger::Log(LogLevel::LEVEL_ERROR, "%s - Could not open streaming for channel [%s]", __FUNCTION__, name.c_str());
         return -1;
       }
       bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);

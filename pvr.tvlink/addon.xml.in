@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.0.7"
+  version="2.0.8"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.0.8
+- Added: TVLINK connection timeout settings
 v2.0.7
 - Fixed: Fix episode number when there is no season
 - Fixed: Return server error if channels or groups could not be loaded due to missing file so they are not cleared in Kodi

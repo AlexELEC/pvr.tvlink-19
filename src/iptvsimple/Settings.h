@@ -76,6 +76,7 @@ namespace iptvsimple
     const RefreshMode& GetM3URefreshMode() const { return m_m3uRefreshMode; }
     int GetM3URefreshIntervalMins() const { return m_m3uRefreshIntervalMins; }
     int GetM3URefreshHour() const { return m_m3uRefreshHour; }
+    int GetTvlinkTimeout() const { return m_tvlinkTimeout; }
 
     const std::string& GetEpgLocation() const
     {
@@ -200,6 +201,7 @@ namespace iptvsimple
     std::string m_tvlinkIP;
     std::string m_tvlinkPort;
     std::string m_tvlinkUser;
+    int m_tvlinkTimeout = 30;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;

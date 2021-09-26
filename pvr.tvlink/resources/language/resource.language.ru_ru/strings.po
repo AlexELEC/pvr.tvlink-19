@@ -52,6 +52,11 @@ msgctxt "#30709"
 msgid "TVLINK profile"
 msgstr "Профиль пользователя TVLINK"
 
+#. label: General - tvlinkTimeout (CURL connection-timeout)
+msgctxt "#30711"
+msgid "TVLINK connection timeout"
+msgstr "Таймаут соединения TVLINK"
+
 #. label: General - startNum
 msgctxt "#30013"
 msgid "Start channel number"
@@ -133,6 +138,11 @@ msgstr "Порт сервера [B]TVLINK[/B]."
 msgctxt "#30710"
 msgid "This setting must contain a valid [B]TVLINK user profile name[/B] for the addon to function."
 msgstr "Профиль пользователя [B]TVLINK[/B] для получения списка каналов."
+
+#. help: General - tvlinkTimeout (CURL connection-timeout)
+msgctxt "#30712"
+msgid "This setting must contain a valid [B]TVLINK connection timeout[/B] for the addon to function."
+msgstr "Таймаут соединения для потоков [B]TVLINK[/B]."
 
 #. help: General - m3uCache
 msgctxt "#30604"

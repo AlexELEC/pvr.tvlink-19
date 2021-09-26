@@ -21,6 +21,11 @@
           </constraints>
           <control type="edit" format="string" />
         </setting>
+        <setting id="tvlinkTimeout" type="integer" label="30711" help="30712">
+          <level>0</level>
+          <default>30</default>
+          <control type="edit" format="integer" />
+        </setting>
         <setting id="tvlinkUser" type="string" label="30709" help="30710">
           <level>0</level>
           <default></default>

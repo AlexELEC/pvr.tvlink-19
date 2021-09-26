@@ -25,6 +25,7 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
   m_tvlinkIP = kodi::GetSettingString("tvlinkIP", "127.0.0.1");
   m_tvlinkPort = kodi::GetSettingString("tvlinkPort", "2020");
   m_tvlinkUser = kodi::GetSettingString("tvlinkUser");
+  m_tvlinkTimeout = kodi::GetSettingInt("tvlinkTimeout", 30);
 
   // M3U
   if (!m_tvlinkUser.empty())
