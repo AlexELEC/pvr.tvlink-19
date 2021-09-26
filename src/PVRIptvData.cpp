@@ -332,14 +332,13 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
   {
     std::string url = m_currentChannel.GetStreamURL();
     std::string name = m_currentChannel.GetChannelName();
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Live URL: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
 
     m_streamHandle.CURLCreate(url.c_str());
     m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout));
     // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
-    if (m_streamHandle.CURLOpen(ADDON_READ_NO_CACHE))
-      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Live URL: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
-    else
-      Logger::Log(LogLevel::LEVEL_ERROR, "%s - timeout %d sec [%s] Live URL: %s", __FUNCTION__, iCurl_timeout, name.c_str(), WebUtils::RedactUrl(url).c_str());
+    if (!m_streamHandle.CURLOpen(ADDON_READ_NO_CACHE))
+      Logger::Log(LogLevel::LEVEL_ERROR, "%s - [%s] Live URL (timeout: %ds): %s", __FUNCTION__, name.c_str(), iCurl_timeout, WebUtils::RedactUrl(url).c_str());
 
     return m_streamHandle.IsOpen();
   }
