@@ -56,6 +56,11 @@ msgctxt "#30709"
 msgid "TVLINK profile"
 msgstr ""
 
+#. label: General - tvlinkToken
+msgctxt "#30714"
+msgid "Auth. Token"
+msgstr ""
+
 #. label: General - tvlinkTimeout (CURL connection-timeout)
 msgctxt "#30711"
 msgid "TVLINK connection timeout"
@@ -437,6 +442,11 @@ msgstr ""
 #. help: General - tvlinkUser
 msgctxt "#30710"
 msgid "This setting must contain a valid [B]TVLINK user profile name[/B] for the addon to function."
+msgstr ""
+
+#. help: General - tvlinkToken
+msgctxt "#30715"
+msgid "This setting must contain a valid [B]TVLINK Authorization Token[/B] for the addon to function."
 msgstr ""
 
 #. help: General - tvlinkTimeout (CURL connection-timeout)

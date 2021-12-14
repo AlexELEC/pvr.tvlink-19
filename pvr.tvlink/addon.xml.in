@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.0.8"
+  version="2.0.9"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.0.9
+- Added: Token for authorization of streams
 v2.0.8
 - Added: TVLINK connection timeout settings
 v2.0.7

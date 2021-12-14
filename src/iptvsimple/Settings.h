@@ -201,6 +201,7 @@ namespace iptvsimple
     std::string m_tvlinkIP;
     std::string m_tvlinkPort;
     std::string m_tvlinkUser;
+    std::string m_tvlinkToken;
     int m_tvlinkTimeout = 30;
 
     // M3U

@@ -25,13 +25,25 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
   m_tvlinkIP = kodi::GetSettingString("tvlinkIP", "127.0.0.1");
   m_tvlinkPort = kodi::GetSettingString("tvlinkPort", "2020");
   m_tvlinkUser = kodi::GetSettingString("tvlinkUser");
+  m_tvlinkToken = kodi::GetSettingString("tvlinkToken");
   m_tvlinkTimeout = kodi::GetSettingInt("tvlinkTimeout", 30);
 
   // M3U
-  if (!m_tvlinkUser.empty())
-    m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist/" + m_tvlinkUser;
+  if (!m_tvlinkToken.empty())
+  {
+    if (!m_tvlinkUser.empty())
+      m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/" + m_tvlinkToken + "/playlist/" + m_tvlinkUser;
+    else
+      m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/" + m_tvlinkToken + "/playlist";
+  }
   else
-    m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist";
+  {
+    if (!m_tvlinkUser.empty())
+      m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist/" + m_tvlinkUser;
+    else
+      m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist";
+  }
+
   m_cacheM3U = kodi::GetSettingBoolean("m3uCache", false);
   m_startChannelNumber = kodi::GetSettingInt("startNum", 1);
   m_numberChannelsByM3uOrderOnly = kodi::GetSettingBoolean("numberByOrder", false);

@@ -34,6 +34,14 @@
           </constraints>
           <control type="edit" format="string" />
         </setting>
+        <setting id="tvlinkToken" type="string" label="30714" help="30715">
+          <level>0</level>
+          <default></default>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <control type="edit" format="string" />
+        </setting>
         <setting id="m3uCache" type="boolean" label="30025" help="30604">
           <level>0</level>
           <default>false</default>
