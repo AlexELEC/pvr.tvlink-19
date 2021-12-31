@@ -22,11 +22,11 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
   m_clientPath = clientPath;
 
   // TVLINK Server
-  m_tvlinkIP = kodi::GetSettingString("tvlinkIP", "127.0.0.1");
-  m_tvlinkPort = kodi::GetSettingString("tvlinkPort", "2020");
-  m_tvlinkUser = kodi::GetSettingString("tvlinkUser");
-  m_tvlinkToken = kodi::GetSettingString("tvlinkToken");
-  m_tvlinkTimeout = kodi::GetSettingInt("tvlinkTimeout", 30);
+  m_tvlinkIP = kodi::addon::GetSettingString("tvlinkIP", "127.0.0.1");
+  m_tvlinkPort = kodi::addon::GetSettingString("tvlinkPort", "2020");
+  m_tvlinkUser = kodi::addon::GetSettingString("tvlinkUser");
+  m_tvlinkToken = kodi::addon::GetSettingString("tvlinkToken");
+  m_tvlinkTimeout = kodi::addon::GetSettingInt("tvlinkTimeout", 30);
 
   // M3U
   if (!m_tvlinkToken.empty())
@@ -44,18 +44,18 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
       m_m3uUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/playlist";
   }
 
-  m_cacheM3U = kodi::GetSettingBoolean("m3uCache", false);
-  m_startChannelNumber = kodi::GetSettingInt("startNum", 1);
-  m_numberChannelsByM3uOrderOnly = kodi::GetSettingBoolean("numberByOrder", false);
-  m_m3uRefreshMode = kodi::GetSettingEnum<RefreshMode>("m3uRefreshMode", RefreshMode::REPEATED_REFRESH);
-  m_m3uRefreshIntervalMins = kodi::GetSettingInt("m3uRefreshIntervalMins", 180);
-  m_m3uRefreshHour = kodi::GetSettingInt("m3uRefreshHour", 4);
+  m_cacheM3U = kodi::addon::GetSettingBoolean("m3uCache", false);
+  m_startChannelNumber = kodi::addon::GetSettingInt("startNum", 1);
+  m_numberChannelsByM3uOrderOnly = kodi::addon::GetSettingBoolean("numberByOrder", false);
+  m_m3uRefreshMode = kodi::addon::GetSettingEnum<RefreshMode>("m3uRefreshMode", RefreshMode::REPEATED_REFRESH);
+  m_m3uRefreshIntervalMins = kodi::addon::GetSettingInt("m3uRefreshIntervalMins", 180);
+  m_m3uRefreshHour = kodi::addon::GetSettingInt("m3uRefreshHour", 4);
 
   // EPG
   m_epgUrl = "http://" + m_tvlinkIP + ":" + m_tvlinkPort + "/xmltv";
-  m_cacheEPG = kodi::GetSettingBoolean("epgCache", true);
-  m_epgTimeShiftHours = kodi::GetSettingFloat("epgTimeShift", 0.0f);
-  m_tsOverride = kodi::GetSettingBoolean("epgTSOverride", false);
+  m_cacheEPG = kodi::addon::GetSettingBoolean("epgCache", true);
+  m_epgTimeShiftHours = kodi::addon::GetSettingFloat("epgTimeShift", 0.0f);
+  m_tsOverride = kodi::addon::GetSettingBoolean("epgTSOverride", false);
 }
 
 void Settings::ReloadAddonSettings()
@@ -63,7 +63,7 @@ void Settings::ReloadAddonSettings()
   ReadFromAddon(m_userPath, m_clientPath);
 }
 
-ADDON_STATUS Settings::SetValue(const std::string& settingName, const kodi::CSettingValue& settingValue)
+ADDON_STATUS Settings::SetValue(const std::string& settingName, const kodi::addon::CSettingValue& settingValue)
 {
   // reset cache and restart addon
 
