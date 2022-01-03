@@ -190,7 +190,7 @@ void CatchupController::SetCatchupInputStreamProperties(bool playbackAsLive, con
   catchupProperties.insert({"inputstream.ffmpegdirect.stream_mode", "catchup"});
 
   std::string orgUrl = channel.GetStreamURL();
-  std::string catchupUrl = orgUrl + "?appendurl=" + orgUrl + "?offset=-${offset}&utcstart=${timestamp}" + "&shifturl=" + orgUrl + "?utc={utc}&lutc={lutc}";
+  std::string catchupUrl = orgUrl + "?utc={utc}&lutc={lutc}";
   catchupProperties.insert({"inputstream.ffmpegdirect.default_url", orgUrl});
   catchupProperties.insert({"inputstream.ffmpegdirect.playback_as_live", playbackAsLive ? "true" : "false"});
   catchupProperties.insert({"inputstream.ffmpegdirect.catchup_url_format_string", catchupUrl});

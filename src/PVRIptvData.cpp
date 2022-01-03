@@ -233,26 +233,15 @@ PVR_ERROR PVRIptvData::GetEPGTagStreamProperties(const kodi::addon::PVREPGTag& t
 
     std::map<std::string, std::string> catchupProperties;
     m_catchupController.ProcessEPGTagForTimeshiftedPlayback(tag, m_currentChannel, catchupProperties);
-
-    std::string fullUrl;
     std::string orgUrl = m_currentChannel.GetStreamURL();
-
-    // append catchup url
-    m_currentChannel.GenerateAppendCatchupSource(orgUrl);
-    const std::string catchupAppendUrl = m_catchupController.GetCatchupUrl(m_currentChannel);
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - AppendCatchup URL: %s", __FUNCTION__, WebUtils::RedactUrl(catchupAppendUrl).c_str());
 
     // shift catchup url
     m_currentChannel.GenerateShiftCatchupSource(orgUrl);
     const std::string catchupShiftUrl = m_catchupController.GetCatchupUrl(m_currentChannel);
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - ShiftCatchup URL: %s", __FUNCTION__, WebUtils::RedactUrl(catchupShiftUrl).c_str());
-
-    // full catchup url
-    fullUrl = orgUrl + "?appendurl=" + catchupAppendUrl + "&shifturl=" + catchupShiftUrl;
       
-    StreamUtils::SetAllStreamProperties(properties, m_currentChannel, fullUrl, false, catchupProperties);
+    StreamUtils::SetAllStreamProperties(properties, m_currentChannel, catchupShiftUrl, false, catchupProperties);
 
-    Logger::Log(LEVEL_INFO, "%s - EPG Catchup URL: %s", __FUNCTION__, WebUtils::RedactUrl(fullUrl).c_str());
+    Logger::Log(LEVEL_INFO, "%s - EPG Catchup URL: %s", __FUNCTION__, WebUtils::RedactUrl(catchupShiftUrl).c_str());
     return PVR_ERROR_NO_ERROR;
   }
 

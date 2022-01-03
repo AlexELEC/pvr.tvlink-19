@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.1.0"
+  version="2.1.1"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.1.1
+- remake Catchup for TVLINK-3.0.2
 v2.1.0
 - Kodi main API update to version 2.0.0
 v2.0.9
