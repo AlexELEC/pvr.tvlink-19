@@ -118,6 +118,52 @@ msgctxt "#30026"
 msgid "Cache XMLTV EPG at local storage"
 msgstr "Кэшировать XMLTV EPG в локальное хранилище"
 
+#. label-group: Stream control
+
+msgctxt "#30030"
+msgid "Streams"
+msgstr "Потоки"
+
+msgctxt "#30040"
+msgid "Stream control"
+msgstr "Управление потоками"
+
+msgctxt "#30630"
+msgid "Stream settings required for the addon to function."
+msgstr "Настройки потоков."
+
+msgctxt "#30031"
+msgid "Max count Restart"
+msgstr "Счетчик переключения"
+
+msgctxt "#30631"
+msgid "Maximum number of counter before switching the stream."
+msgstr "Максимальное значение счетчика для переключения потока."
+
+msgctxt "#30032"
+msgid "Min bytes Read"
+msgstr "Мимимальное количество байт"
+
+msgctxt "#30632"
+msgid "Minimum number of read bytes to increase the counter."
+msgstr "Мимимальное количество байт для увеличения [B]Счетчика переключения[/B]."
+
+msgctxt "#30033"
+msgid "Stream play Time"
+msgstr "Время работы потока"
+
+msgctxt "#30633"
+msgid "Number of seconds during which the counter will increase."
+msgstr "Количество секунд для увеличения [B]Счетчика переключения[/B]."
+
+msgctxt "#30041"
+msgid "{0:d} itr"
+msgstr "{0:d} итр"
+
+msgctxt "#30042"
+msgid "{0:d} bytes"
+msgstr "{0:d} байт"
+
 #. ############
 #. help info #
 #. ############

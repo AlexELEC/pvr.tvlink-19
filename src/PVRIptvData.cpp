@@ -79,6 +79,9 @@ ADDON_STATUS PVRIptvData::Create()
   m_running = true;
   m_thread = std::thread([&] { Process(); });
   iCurl_timeout = Settings::GetInstance().GetTvlinkTimeout(); // CURL connection timeout
+  iMax_count_restart = Settings::GetInstance().GetMaxCountRestart();
+  iMin_read_bytes = Settings::GetInstance().GetMinReadBytes();
+  iStreamPlayTime = Settings::GetInstance().GetStreamPlayTime();
 
   return ADDON_STATUS_OK;
 }
@@ -319,7 +322,8 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
 {
   if (GetChannel(channel, m_currentChannel))
   {
-    CloseLiveStream();
+    iLast_time = 0;
+    iRestart_cnt = 1;
     std::string url = m_currentChannel.GetStreamURL();
     std::string name = m_currentChannel.GetChannelName();
     Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s]: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
@@ -328,7 +332,7 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
     if (iCurl_timeout > 0)
       m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout).c_str());
     // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
-    m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE);
+    m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN);
 
     return m_streamHandle.IsOpen();
   }
@@ -337,9 +341,7 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
 
 void PVRIptvData::CloseLiveStream(void)
 {
-  std::lock_guard<std::mutex> lock(m_mutex);
-  strLastURL = "";
-  iRestart_cnt = 0;
+  //std::lock_guard<std::mutex> lock(m_mutex);
   if (m_streamHandle.IsOpen())
   {
     std::string url = m_currentChannel.GetStreamURL();
@@ -352,47 +354,50 @@ void PVRIptvData::CloseLiveStream(void)
 
 int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize)
 {
-  unsigned int bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
-  if (bytesRead < 50)
+  int bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
+  if (bytesRead < iMin_read_bytes)
   {
     std::string url = m_currentChannel.GetStreamURL();
     std::string name = m_currentChannel.GetChannelName();
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] requested bytes [%d] received bytes [%d]", __FUNCTION__, name.c_str(), iBufferSize, bytesRead);
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - last URL [%s] | current URL [%s]", __FUNCTION__, WebUtils::RedactUrl(strLastURL).c_str(), WebUtils::RedactUrl(url).c_str());
-    if (strLastURL == url)
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] min requested bytes: [%d] received bytes: [%d]", __FUNCTION__, name.c_str(), iMin_read_bytes, bytesRead);
+
+    if (bytesRead < 0)
     {
-      iRestart_cnt++;
+      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Failed to read live Stream. Error code: %d!", __FUNCTION__, name.c_str(), bytesRead);
+      bytesRead = 0;
+    }
+    auto current_time = std::chrono::system_clock::now();
+    auto duration_in_seconds = std::chrono::duration<double>(current_time.time_since_epoch());
+    int current_seconds = (int)duration_in_seconds.count();
+    if (iLast_time < 1)
+      iLast_time = current_seconds;
+    int diff_time = current_seconds - iLast_time;
+
+    if (diff_time < iStreamPlayTime)
+    {
+      if (diff_time > 5)
+        iRestart_cnt++;
     }
     else
     {
-      strLastURL = url;
+      iLast_time = 0;
       iRestart_cnt = 1;
     }
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] set time: [%d] current time: [%d] iter count: [%d]", __FUNCTION__, name.c_str(), iStreamPlayTime, diff_time, iRestart_cnt);
 
-    // MAX_COUNT_RESTART = 5
-    if (iRestart_cnt > MAX_COUNT_RESTART || bytesRead < 1 )
+    if (iRestart_cnt > iMax_count_restart || bytesRead < 1 )
     {
-      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] stream stalled count: %d", __FUNCTION__, name.c_str(), iRestart_cnt);
-
-      // restart stream
-      CloseLiveStream();
-      Logger::Log(LogLevel::LEVEL_INFO, "OpenLiveStream - [%s] restart channel: [%s]", name.c_str(), WebUtils::RedactUrl(url).c_str());
-      m_streamHandle.CURLCreate(url.c_str());
-      if (iCurl_timeout > 0)
-        m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout).c_str());
-
-      // ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE
-      if (!m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE))
-      {
-        Logger::Log(LogLevel::LEVEL_ERROR, "OpenLiveStream - Could not open streaming for channel [%s]", name.c_str());
-        return -1;
-      }
-      bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
+      iLast_time = 0;
+      iRestart_cnt = 1;
+      // send next stream
+      std::string next_url = url + "/next";
+      kodi::vfs::CFile nextHandle;
+      nextHandle.CURLCreate(next_url.c_str());
+      nextHandle.CURLOpen();
+      nextHandle.Close();
+      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Send request next stream!", __FUNCTION__, name.c_str());
     }
-  }
-  else
-  {
-    iRestart_cnt = 0;
+
   }
   return bytesRead;
 }

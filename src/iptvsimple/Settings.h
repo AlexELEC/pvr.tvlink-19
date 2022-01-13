@@ -77,6 +77,9 @@ namespace iptvsimple
     int GetM3URefreshIntervalMins() const { return m_m3uRefreshIntervalMins; }
     int GetM3URefreshHour() const { return m_m3uRefreshHour; }
     int GetTvlinkTimeout() const { return m_tvlinkTimeout; }
+    int GetMaxCountRestart() const { return m_maxCountRestart; }
+    int GetMinReadBytes() const { return m_minReadBytes; }
+    int GetStreamPlayTime() const { return m_streamPlayTime; }
 
     const std::string& GetEpgLocation() const
     {
@@ -203,6 +206,9 @@ namespace iptvsimple
     std::string m_tvlinkUser;
     std::string m_tvlinkToken;
     int m_tvlinkTimeout = 30;
+    int m_maxCountRestart = 10;
+    int m_minReadBytes = 256;
+    int m_streamPlayTime = 60;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;
