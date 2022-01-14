@@ -90,6 +90,8 @@ private:
   int iRestart_cnt = 0;
   int iLast_time = 0;
   int iCurl_timeout;
+  bool bPrimeStrm;
+  bool bNextStrm;
 
   iptvsimple::data::Channel m_currentChannel;
   iptvsimple::Channels m_channels;

@@ -164,6 +164,14 @@ msgctxt "#30042"
 msgid "{0:d} bytes"
 msgstr "{0:d} байт"
 
+msgctxt "#30043"
+msgid "Switching streams"
+msgstr "Переключение потоков"
+
+msgctxt "#30044"
+msgid "Enables settings for switching streams."
+msgstr "Задействует настройки для переключения потоков."
+
 #. ############
 #. help info #
 #. ############

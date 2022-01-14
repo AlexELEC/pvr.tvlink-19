@@ -80,6 +80,7 @@ namespace iptvsimple
     int GetMaxCountRestart() const { return m_maxCountRestart; }
     int GetMinReadBytes() const { return m_minReadBytes; }
     int GetStreamPlayTime() const { return m_streamPlayTime; }
+    bool GetBoolNextStrm() const { return m_nextStrm; }
 
     const std::string& GetEpgLocation() const
     {
@@ -207,8 +208,9 @@ namespace iptvsimple
     std::string m_tvlinkToken;
     int m_tvlinkTimeout = 30;
     int m_maxCountRestart = 10;
-    int m_minReadBytes = 256;
-    int m_streamPlayTime = 60;
+    int m_minReadBytes = 128;
+    int m_streamPlayTime = 30;
+    bool m_nextStrm = false;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;

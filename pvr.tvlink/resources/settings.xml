@@ -115,6 +115,11 @@
             <formatlabel>14045</formatlabel>
           </control>
         </setting>
+        <setting id="nextStrm" type="boolean" label="30043" help="30044">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle" />
+        </setting>
         <setting id="maxCountRestart" type="integer" label="30031" help="30631">
           <level>0</level>
           <default>10</default>
@@ -123,30 +128,39 @@
             <step>1</step>
             <maximum>50</maximum>
           </constraints>
+          <dependencies>
+            <dependency type="enable" setting="nextStrm" operator="is">true</dependency>
+          </dependencies>
           <control type="slider" format="integer">
             <formatlabel>30041</formatlabel>
           </control>
         </setting>
         <setting id="minReadBytes" type="integer" label="30032" help="30632">
           <level>1</level>
-          <default>256</default>
+          <default>128</default>
           <constraints>
             <minimum>64</minimum>
             <step>64</step>
             <maximum>4096</maximum>
           </constraints>
+          <dependencies>
+            <dependency type="enable" setting="nextStrm" operator="is">true</dependency>
+          </dependencies>
           <control type="slider" format="integer">
             <formatlabel>30042</formatlabel>
           </control>
         </setting>
         <setting id="streamPlayTime" type="integer" label="30033" help="30633">
           <level>1</level>
-          <default>60</default>
+          <default>30</default>
           <constraints>
-            <minimum>10</minimum>
+            <minimum>20</minimum>
             <step>10</step>
             <maximum>300</maximum>
           </constraints>
+          <dependencies>
+            <dependency type="enable" setting="nextStrm" operator="is">true</dependency>
+          </dependencies>
           <control type="slider" format="integer">
             <formatlabel>14045</formatlabel>
           </control>
