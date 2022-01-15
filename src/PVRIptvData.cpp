@@ -13,6 +13,8 @@
 #include "iptvsimple/utilities/TimeUtils.h"
 #include "iptvsimple/utilities/WebUtils.h"
 
+#include "kodi/General.h"
+
 #include <ctime>
 #include <chrono>
 
@@ -362,10 +364,30 @@ void PVRIptvData::CloseLiveStream(void)
 int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize)
 {
   int bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
-  if (bytesRead < 0)
+
+  if (bytesRead < 1)
   {
-    Logger::Log(LogLevel::LEVEL_DEBUG, "%s - Failed to read liveStream. Error code: %d", __FUNCTION__, bytesRead);
-    bytesRead = 0;
+    Logger::Log(LogLevel::LEVEL_INFO, "%s --- Switching to the Next Stream! ---", __FUNCTION__);
+    kodi::QueueNotification(QUEUE_INFO, "", "Switching to the Next Stream!");
+
+    CloseLiveStream();
+    iLast_time = 0;
+    iRestart_cnt = 1;
+    bPrimeStrm = true;
+    std::string url = m_currentChannel.GetStreamURL();
+    std::string name = m_currentChannel.GetChannelName();
+    Logger::Log(LogLevel::LEVEL_INFO, "OpenNextStream - [%s]: %s", name.c_str(), WebUtils::RedactUrl(url).c_str());
+
+    m_streamHandle.CURLCreate(url.c_str());
+    if (iCurl_timeout > 0)
+      m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout).c_str());
+
+    if (!m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN))
+    {
+      Logger::Log(LogLevel::LEVEL_ERROR, "OpenNextStream - Could not open streaming for channel [%s]", name.c_str());
+      return -1;
+    }
+    bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
   }
 
   if (bNextStrm && bytesRead < iMin_read_bytes)
@@ -401,24 +423,20 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
       iLast_time = 0;
       iRestart_cnt = 1;
       bPrimeStrm = true;
-      // send next stream
       std::string next_url = url + "/next";
       kodi::vfs::CFile nextHandle;
       nextHandle.CURLCreate(next_url.c_str());
       nextHandle.CURLOpen();
       nextHandle.Close();
-      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Send request Next stream!", __FUNCTION__, name.c_str());
+      Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] --- Send request Next stream! ---", __FUNCTION__, name.c_str());
     }
   }
   else
   {
     if (bNextStrm)
-    {
       bPrimeStrm = false;
-      iLast_time = 0;
-      iRestart_cnt = 1;
-    }
   }
+
   return bytesRead;
 }
 
