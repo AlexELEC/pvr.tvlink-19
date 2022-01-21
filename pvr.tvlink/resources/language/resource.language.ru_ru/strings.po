@@ -172,6 +172,14 @@ msgctxt "#30044"
 msgid "Enables settings for switching streams."
 msgstr "Задействует настройки для переключения потоков."
 
+msgctxt "#30045"
+msgid "Buffering streams"
+msgstr "Буферизация потоков"
+
+msgctxt "#30046"
+msgid "Enable stream buffering."
+msgstr "Включить буферизацию потоков."
+
 #. ############
 #. help info #
 #. ############

@@ -86,6 +86,18 @@ ADDON_STATUS PVRIptvData::Create()
   iStreamPlayTime = Settings::GetInstance().GetStreamPlayTime();
   bNextStrm = Settings::GetInstance().GetBoolNextStrm();
 
+  // ADDON_READ_TRUNCATED     - function returns before entire buffer has been filled
+  // ADDON_READ_CHUNKED       - read in the minimum defined chunk size, this disables internal cache then
+  // ADDON_READ_NO_CACHE      - open without caching
+  // ADDON_READ_MULTI_STREAM  - will seek between multiple streams in the file frequently
+  // ADDON_READ_AUDIO_VIDEO   - file is audio and/or video (and e.g. may grow)
+  // ADDON_READ_REOPEN        - indicate that caller want to reopen a file if its already open
+
+  if (Settings::GetInstance().GetCurlBuffering())
+    iCurl_flags = ADDON_READ_TRUNCATED | ADDON_READ_CACHED | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN;
+  else
+    iCurl_flags = ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN;
+
   return ADDON_STATUS_OK;
 }
 
@@ -330,19 +342,12 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
     bPrimeStrm = true;
     std::string url = m_currentChannel.GetStreamURL();
     std::string name = m_currentChannel.GetChannelName();
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s]: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] buffering mode [%d]: %s", __FUNCTION__, name.c_str(), iCurl_flags, WebUtils::RedactUrl(url).c_str());
 
     m_streamHandle.CURLCreate(url.c_str());
     if (iCurl_timeout > 0)
       m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout).c_str());
-
-    // ADDON_READ_TRUNCATED     - function returns before entire buffer has been filled
-    // ADDON_READ_CHUNKED       - read in the minimum defined chunk size, this disables internal cache then
-    // ADDON_READ_NO_CACHE      - open without caching
-    // ADDON_READ_MULTI_STREAM  - will seek between multiple streams in the file frequently
-    // ADDON_READ_AUDIO_VIDEO   - file is audio and/or video (and e.g. may grow)
-    // ADDON_READ_REOPEN        - indicate that caller want to reopen a file if its already open
-    m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN);
+    m_streamHandle.CURLOpen(iCurl_flags);
 
     return m_streamHandle.IsOpen();
   }
@@ -367,8 +372,17 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
 
   if (bytesRead < 1)
   {
-    Logger::Log(LogLevel::LEVEL_INFO, "%s --- Switching to the Next Stream! ---", __FUNCTION__);
-    kodi::QueueNotification(QUEUE_INFO, "", "Switching to the Next Stream!");
+    if (bNextStrm && bSendNextStream)
+    {
+      bSendNextStream = false;
+      Logger::Log(LogLevel::LEVEL_INFO, "%s --- Switching to Next Stream! ---", __FUNCTION__);
+      kodi::QueueNotification(QUEUE_INFO, "", "Switching to Next Stream!");
+    }
+    else
+    {
+      Logger::Log(LogLevel::LEVEL_INFO, "%s --- Reopen or Switch current Stream! ---", __FUNCTION__);
+      kodi::QueueNotification(QUEUE_INFO, "", "Reopen or Switch current Stream!");
+    }
 
     CloseLiveStream();
     iLast_time = 0;
@@ -376,15 +390,15 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
     bPrimeStrm = true;
     std::string url = m_currentChannel.GetStreamURL();
     std::string name = m_currentChannel.GetChannelName();
-    Logger::Log(LogLevel::LEVEL_INFO, "OpenNextStream - [%s]: %s", name.c_str(), WebUtils::RedactUrl(url).c_str());
+    Logger::Log(LogLevel::LEVEL_INFO, "OpenLiveStream (Read) - [%s] buffering mode [%d]: %s", name.c_str(), iCurl_flags, WebUtils::RedactUrl(url).c_str());
 
     m_streamHandle.CURLCreate(url.c_str());
     if (iCurl_timeout > 0)
       m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iCurl_timeout).c_str());
 
-    if (!m_streamHandle.CURLOpen(ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN))
+    if (!m_streamHandle.CURLOpen(iCurl_flags))
     {
-      Logger::Log(LogLevel::LEVEL_ERROR, "OpenNextStream - Could not open streaming for channel [%s]", name.c_str());
+      Logger::Log(LogLevel::LEVEL_ERROR, "OpenLiveStream (Read) - Could not open streaming for channel [%s]", name.c_str());
       return -1;
     }
     bytesRead = m_streamHandle.Read(pBuffer, iBufferSize);
@@ -428,6 +442,7 @@ int PVRIptvData::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize
       nextHandle.CURLCreate(next_url.c_str());
       nextHandle.CURLOpen();
       nextHandle.Close();
+      bSendNextStream = true;
       Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] --- Send request Next stream! ---", __FUNCTION__, name.c_str());
     }
   }

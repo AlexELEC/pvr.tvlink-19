@@ -84,6 +84,7 @@ protected:
 
 private:
   static const int PROCESS_LOOP_WAIT_SECS = 2;
+  unsigned int iCurl_flags;
   int iMax_count_restart;
   int iMin_read_bytes;
   int iStreamPlayTime;
@@ -92,6 +93,7 @@ private:
   int iCurl_timeout;
   bool bPrimeStrm;
   bool bNextStrm;
+  bool bSendNextStream;
 
   iptvsimple::data::Channel m_currentChannel;
   iptvsimple::Channels m_channels;

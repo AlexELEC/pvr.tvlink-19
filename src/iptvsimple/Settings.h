@@ -81,6 +81,7 @@ namespace iptvsimple
     int GetMinReadBytes() const { return m_minReadBytes; }
     int GetStreamPlayTime() const { return m_streamPlayTime; }
     bool GetBoolNextStrm() const { return m_nextStrm; }
+    bool GetCurlBuffering() const { return m_curlBuff; }
 
     const std::string& GetEpgLocation() const
     {
@@ -211,6 +212,7 @@ namespace iptvsimple
     int m_minReadBytes = 128;
     int m_streamPlayTime = 30;
     bool m_nextStrm = false;
+    bool m_curlBuff = false;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;

@@ -1,6 +1,7 @@
 v2.1.2
 - Added: redo switch streams
 - Added: options Stream control
+- Added: enable/disable Buffering streams
 
 v2.1.1
 - Added: redo Catchup TVLINK-3.0.2

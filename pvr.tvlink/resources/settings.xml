@@ -115,6 +115,11 @@
             <formatlabel>14045</formatlabel>
           </control>
         </setting>
+        <setting id="curlBuff" type="boolean" label="30045" help="30046">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle" />
+        </setting>
         <setting id="nextStrm" type="boolean" label="30043" help="30044">
           <level>0</level>
           <default>false</default>
