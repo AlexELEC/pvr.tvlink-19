@@ -142,11 +142,11 @@ msgstr "Максимальное значение счетчика для пер
 
 msgctxt "#30032"
 msgid "Min bytes Read"
-msgstr "Мимимальное количество байт"
+msgstr "Минимальное количество байт"
 
 msgctxt "#30632"
 msgid "Minimum number of read bytes to increase the counter."
-msgstr "Мимимальное количество байт для увеличения [B]Счетчика переключения[/B]."
+msgstr "Минимальное количество байт для увеличения [B]Счетчика переключения[/B]."
 
 msgctxt "#30033"
 msgid "Stream play Time"
