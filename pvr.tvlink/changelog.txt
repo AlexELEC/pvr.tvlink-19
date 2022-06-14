@@ -1,3 +1,7 @@
+v2.2.0
+- Added: rework code for new Kodi PVR API (curl)
+- Delete: unused options Stream control
+
 v2.1.2
 - Added: redo switch streams
 - Added: options Stream control

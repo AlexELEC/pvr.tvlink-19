@@ -26,11 +26,7 @@ void Settings::ReadFromAddon(const std::string& userPath, const std::string& cli
   m_tvlinkPort = kodi::addon::GetSettingString("tvlinkPort", "2020");
   m_tvlinkUser = kodi::addon::GetSettingString("tvlinkUser");
   m_tvlinkToken = kodi::addon::GetSettingString("tvlinkToken");
-  m_tvlinkTimeout = kodi::addon::GetSettingInt("tvlinkTimeout", 30);
-  m_maxCountRestart = kodi::addon::GetSettingInt("maxCountRestart", 10);
-  m_minReadBytes = kodi::addon::GetSettingInt("minReadBytes", 128);
-  m_streamPlayTime = kodi::addon::GetSettingInt("streamPlayTime", 30);
-  m_nextStrm = kodi::addon::GetSettingBoolean("nextStrm", false);
+  m_connectTimeout = kodi::addon::GetSettingInt("connectTimeout", 10);
   m_curlBuff = kodi::addon::GetSettingBoolean("curlBuff", false);
 
   // M3U

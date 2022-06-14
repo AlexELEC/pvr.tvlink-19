@@ -85,15 +85,7 @@ protected:
 private:
   static const int PROCESS_LOOP_WAIT_SECS = 2;
   unsigned int iCurl_flags;
-  int iMax_count_restart;
-  int iMin_read_bytes;
-  int iStreamPlayTime;
-  int iRestart_cnt = 0;
-  int iLast_time = 0;
-  int iCurl_timeout;
-  bool bPrimeStrm;
-  bool bNextStrm;
-  bool bSendNextStream;
+  int iConnect_timeout;
 
   iptvsimple::data::Channel m_currentChannel;
   iptvsimple::Channels m_channels;
@@ -102,6 +94,7 @@ private:
   iptvsimple::Epg m_epg{this, m_channels};
   iptvsimple::CatchupController m_catchupController{m_epg, &m_mutex};
 
+  std::string strCurl_buff;
   std::atomic<bool> m_running{false};
   std::thread m_thread;
   std::mutex m_mutex;

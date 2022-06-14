@@ -76,11 +76,7 @@ namespace iptvsimple
     const RefreshMode& GetM3URefreshMode() const { return m_m3uRefreshMode; }
     int GetM3URefreshIntervalMins() const { return m_m3uRefreshIntervalMins; }
     int GetM3URefreshHour() const { return m_m3uRefreshHour; }
-    int GetTvlinkTimeout() const { return m_tvlinkTimeout; }
-    int GetMaxCountRestart() const { return m_maxCountRestart; }
-    int GetMinReadBytes() const { return m_minReadBytes; }
-    int GetStreamPlayTime() const { return m_streamPlayTime; }
-    bool GetBoolNextStrm() const { return m_nextStrm; }
+    int GetConnectTimeout() const { return m_connectTimeout; }
     bool GetCurlBuffering() const { return m_curlBuff; }
 
     const std::string& GetEpgLocation() const
@@ -207,11 +203,7 @@ namespace iptvsimple
     std::string m_tvlinkPort;
     std::string m_tvlinkUser;
     std::string m_tvlinkToken;
-    int m_tvlinkTimeout = 30;
-    int m_maxCountRestart = 10;
-    int m_minReadBytes = 128;
-    int m_streamPlayTime = 30;
-    bool m_nextStrm = false;
+    int m_connectTimeout = 10;
     bool m_curlBuff = false;
 
     // M3U
