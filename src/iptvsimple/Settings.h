@@ -203,8 +203,10 @@ namespace iptvsimple
     std::string m_tvlinkPort;
     std::string m_tvlinkUser;
     std::string m_tvlinkToken;
+    std::string m_tvlinkList;
     int m_connectTimeout = 10;
     bool m_curlBuff = false;
+    bool m_useFFmpeg = false;
 
     // M3U
     PathType m_m3uPathType = PathType::REMOTE_PATH;

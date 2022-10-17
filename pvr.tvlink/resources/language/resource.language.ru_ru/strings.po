@@ -57,6 +57,11 @@ msgctxt "#30714"
 msgid "Auth. Token"
 msgstr "Токен авторизации"
 
+#. label: General - useFFmpeg
+msgctxt "#30716"
+msgid "FFmpeg playlist"
+msgstr "FFmpeg плейлист"
+
 #. label: General - tvlinkTimeout (CURL connection-timeout)
 msgctxt "#30711"
 msgid "TVLINK connection timeout"
@@ -170,6 +175,11 @@ msgstr "Профиль пользователя [B]TVLINK[/B] для получ�
 msgctxt "#30715"
 msgid "This setting must contain a valid [B]TVLINK Authorization Token[/B] for the addon to function."
 msgstr "Токен авторизации [B]TVLINK[/B] для доступа к потокам."
+
+#. help: General - useFFmpeg
+msgctxt "#30717"
+msgid "Select if you want to use the transcoding FFmpeg playlist."
+msgstr "Выберите если Вы хотите использовать [B]FFmpeg модуль[/B] TVLINK."
 
 #. help: General - tvlinkTimeout (CURL connection-timeout)
 msgctxt "#30712"

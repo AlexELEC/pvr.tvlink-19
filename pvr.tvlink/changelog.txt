@@ -1,3 +1,6 @@
+v2.2.1
+- Added: option FFmpeg playlist
+
 v2.2.0
 - Added: rework code for new Kodi PVR API (curl)
 - Delete: unused options Stream control
