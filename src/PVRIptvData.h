@@ -100,4 +100,6 @@ private:
   std::mutex m_mutex;
   std::atomic_bool m_reloadChannelsGroupsAndEPG{false};
   kodi::vfs::CFile m_streamHandle;
+  std::string ch_url;
+  std::string ch_name;
 };

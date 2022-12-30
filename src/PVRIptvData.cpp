@@ -92,12 +92,12 @@ ADDON_STATUS PVRIptvData::Create()
   if (Settings::GetInstance().GetCurlBuffering())
   {
     strCurl_buff = "buffering mode";
-    iCurl_flags = ADDON_READ_TRUNCATED | ADDON_READ_CACHED | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN;
+    iCurl_flags = ADDON_READ_CACHED | ADDON_READ_AUDIO_VIDEO;
   }
   else
   {
     strCurl_buff = "not buffering";
-    iCurl_flags = ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_MULTI_STREAM | ADDON_READ_AUDIO_VIDEO | ADDON_READ_REOPEN;
+    iCurl_flags = ADDON_READ_TRUNCATED | ADDON_READ_CHUNKED | ADDON_READ_NO_CACHE | ADDON_READ_AUDIO_VIDEO;
   }
 
   return ADDON_STATUS_OK;
@@ -339,11 +339,11 @@ bool PVRIptvData::OpenLiveStream(const kodi::addon::PVRChannel& channel)
 {
   if (GetChannel(channel, m_currentChannel))
   {
-    std::string url = m_currentChannel.GetStreamURL();
-    std::string name = m_currentChannel.GetChannelName();
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] %s Live URL: %s", __FUNCTION__, name.c_str(), strCurl_buff.c_str(), WebUtils::RedactUrl(url).c_str());
+    ch_url = m_currentChannel.GetStreamURL();
+    ch_name = m_currentChannel.GetChannelName();
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] %s Live URL: %s", __FUNCTION__, ch_name.c_str(), strCurl_buff.c_str(), WebUtils::RedactUrl(ch_url).c_str());
 
-    m_streamHandle.CURLCreate(url.c_str());
+    m_streamHandle.CURLCreate(ch_url.c_str());
     m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "connection-timeout", std::to_string(iConnect_timeout).c_str());
     m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "data-timeout", "0");
     m_streamHandle.CURLAddOption(ADDON_CURL_OPTION_PROTOCOL, "lowspeed-time", "0");
@@ -360,10 +360,8 @@ void PVRIptvData::CloseLiveStream(void)
 {
   if (m_streamHandle.IsOpen())
   {
-    std::string url = m_currentChannel.GetStreamURL();
-    std::string name = m_currentChannel.GetChannelName();
-    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Live URL: %s", __FUNCTION__, name.c_str(), WebUtils::RedactUrl(url).c_str());
     m_streamHandle.Close();
+    Logger::Log(LogLevel::LEVEL_INFO, "%s - [%s] Live URL: %s", __FUNCTION__, ch_name.c_str(), WebUtils::RedactUrl(ch_url).c_str());
   }
 
 }

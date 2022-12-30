@@ -1,3 +1,6 @@
+v2.2.2
+- Fixed: Stream buffering mode
+
 v2.2.1
 - Added: option FFmpeg playlist
 

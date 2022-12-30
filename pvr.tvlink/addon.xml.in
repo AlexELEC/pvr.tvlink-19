@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.tvlink"
-  version="2.2.1"
+  version="2.2.2"
   name="PVR TVLINK Client"
   provider-name="Alex@ELEC">
   <requires>@ADDON_DEPENDS@
@@ -24,6 +24,8 @@
       <icon>icon.png</icon>
     </assets>
     <news>
+v2.2.2
+- Fixed: Stream buffering mode
 v2.2.1
 - Added: option FFmpeg playlist
 v2.2.0
